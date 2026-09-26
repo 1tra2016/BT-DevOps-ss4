@@ -6,15 +6,20 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/storex
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=secret
+      - DB_HOST=postgres
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    networks:
+      - storex-net
 
   postgres:
     image: postgres:13
-    ports:
-      - "5432:5432"
     environment:
-      - POSTGRES_DB=storex
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    networks:
+      - storex-net
+
+networks:
+  storex-net:
+    driver: bridge
